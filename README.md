@@ -27,6 +27,7 @@ clearShortUrl($url);
 | Parâmetro | Descrição | Exemplo | Tipo | Obrigatório |
 |--|--|--|--|--|
 | $url | URL que deve ser limpa | ShortURL | String | Sim
+
 A função irá retornar o valor limpo da URL, retirando a base do servidor e obtendo apenas o código para identificar a origem.
 **Por exemplo:**
 ```php
