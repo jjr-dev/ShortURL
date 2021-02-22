@@ -33,10 +33,10 @@
 	function shortUrl($url, $custom = false) {
 		date_default_timezone_set('America/Sao_Paulo');
 		
-		if(file_exists('shorts.json')) {
-			$shorts = (array) json_decode(file_get_contents('shorts.json'));
+		if(file_exists('../s/shorts.json')) {
+			$shorts = (array) json_decode(file_get_contents('../s/shorts.json'));
 		} else {
-			file_put_contents('shorts.json', null);
+			file_put_contents('../s/shorts.json', null);
 		}
 
 		if(!$custom) {
@@ -59,7 +59,7 @@
 		}
 
 		$json = json_encode($shorts);
-		if(file_put_contents('shorts.json', $json)) {
+		if(file_put_contents('../s/shorts.json', $json)) {
 			$return = array(
 				'short'		=> $short,
 				'date'		=> date('Y-m-d H:i'),
@@ -72,8 +72,8 @@
 	}
 
 	function openShortUrl($short) {
-		if(file_exists('shorts.json')) {
-			$shorts = (array) json_decode(file_get_contents('shorts.json'));
+		if(file_exists('../s/shorts.json')) {
+			$shorts = (array) json_decode(file_get_contents('../s/shorts.json'));
 		} else {
 			return setErro(3);
 		}
@@ -82,7 +82,7 @@
 			$shorts[$short]->count ++;
 
 			$json = json_encode($shorts);
-			if(file_put_contents('shorts.json', $json)) {
+			if(file_put_contents('../s/shorts.json', $json)) {
 				header("Location: " . $shorts[$short]->origin);
 				// Realiza redirecionamento - Sucesso
 			} else {
@@ -100,8 +100,8 @@
 	}
 
 	function infosUrl($short) {
-		if(file_exists('shorts.json')) {
-			$shorts = (array) json_decode(file_get_contents('shorts.json'));
+		if(file_exists('../s/shorts.json')) {
+			$shorts = (array) json_decode(file_get_contents('../s/shorts.json'));
 			if(isset($shorts[$short])) {
 				return json_encode($shorts[$short]);
 			} else {
