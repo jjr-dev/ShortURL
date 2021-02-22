@@ -1,4 +1,35 @@
 <?php
+	function setErro($code) {
+		$error['erro'] = true;
+		switch ($code) {
+			case 1:
+				$error['code'] 	= 1;
+				$error['msg'] 	= 'URL personalizada já em uso';
+				break;
+			case 2:
+				$error['code'] 	= 2;
+				$error['msg'] 	= 'Erro ao armazenar URL encurtada';
+				break;
+			case 3:
+				$error['code'] 	= 3;
+				$error['msg'] 	= 'Nenhuma URL encurtada';
+				break;
+			case 4:
+				$error['code'] 	= 4;
+				$error['msg'] 	= 'Erro ao armazenar a quantidade de acessos';
+				break;
+			case 5:
+				$error['code'] 	= 5;
+				$error['msg'] 	= 'URL informada não existente';
+				break;
+			default:
+				$error['code']	= 0;
+				$error['msg'] 	= 'Ocorreu um erro desconhecido';
+				break;
+		}
+		return json_encode($error, JSON_UNESCAPED_UNICODE);
+	}
+
 	function shortUrl($url, $custom = false) {
 		date_default_timezone_set('America/Sao_Paulo');
 		
@@ -17,9 +48,7 @@
 		}
 
 		if(isset($shorts[$short])) {
-			// echo 'URL Personalizada indisponível';
-			return false;
-			exit;
+			return setErro(1);
 		} else {
 			$shorts[$short] = array(
 				'short'		=> $short,
@@ -31,11 +60,14 @@
 
 		$json = json_encode($shorts);
 		if(file_put_contents('shorts.json', $json)) {
-			// echo 'Encurtado com sucesso';
-			return true;
+			$return = array(
+				'short'		=> $short,
+				'date'		=> date('Y-m-d H:i'),
+				'origin'	=> $url
+			);
+			return json_encode($return);
 		} else {
-			// echo 'Erro ao encurtar';
-			return false;
+			return setErro(2);
 		}
 	}
 
@@ -43,9 +75,7 @@
 		if(file_exists('shorts.json')) {
 			$shorts = (array) json_decode(file_get_contents('shorts.json'));
 		} else {
-			// echo 'Nenhuma URL encontrada';
-			return false;
-			exit;
+			return setErro(3);
 		}
 
 		if(isset($shorts[$short])) {
@@ -53,17 +83,14 @@
 
 			$json = json_encode($shorts);
 			if(file_put_contents('shorts.json', $json)) {
-				// echo 'Atualizado Count';
-				return true;
+				header("Location: " . $shorts[$short]->origin);
+				// Realiza redirecionamento - Sucesso
 			} else {
-				// echo 'Erro ao contabilizar';
-				return false;
+				return setErro(4);
 			}
 
-			header("Location: " . $shorts[$short]->origin);
 		} else {
-			// echo 'URL encurtada não existente';
-			return false;
+			return setErro(5);
 		}
 	}
 
