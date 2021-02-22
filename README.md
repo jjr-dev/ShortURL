@@ -1,61 +1,89 @@
-# ShortURL
+## 🔗ShortURL
 
-## 👨‍💻 Sobre o projeto
-Encurtador de URL feito em PHP sem uso de Banco de Dados com gerador de URL personalizada ou aleatória.
+## 💬 Sobre o projeto
+Encurtador de URL em PHP sem banco de dados com URL personalizada e aleatória.
 
-### Como gerar URL
-É realmente simples, basta executar as funções para criação da URL encurtada, abertura ou limpeza.
-> Lembre-se de utilizar o include do arquivo ```functions.php```.
-```php
-include 'functions.php';
+![Author - Julimar Junior](https://img.shields.io/badge/Author-Julimar%20Junior-blue?logo=github&url=https://github.com/JulimarJunior)
+
+## 🚀 Atualizações
+Acompanhe as atualizações que ocorreram anteriormente no **shortURL**.
+| Data | Versão | Descrição |
+|--|--|--|
+|20/02/2021 | 1.0 | Base do projeto
+| 22/02/2021 | 1.1 | Ajustes de retornos
+
+## 👨‍💻 Instalação
+1. Baixe todos os arquivos do repositório **shortURL** em uma pasta do servidor vazia (exclusiva para o **shortURL**:
+```html
+www/s/<!-- Arquivos shortURL -->
 ```
-### Criar URL encurtada
+2. Inclua o ```functions.php``` do **shortURL** ao sistema que desejar:
+```php
+include 's/functions.php';
+```
+
+## 🖐️ Funções
+### shortUrl
+A função **shortUrl** gera a URL encurtada e armazena suas informações no arquivo *.json*.
 ```php
 shortUrl($url, $custom);
 ```
 | Parâmetro | Descrição | Exemplo | Tipo | Obrigatório |
 |--|--|--|--|--|
-| $url | URL que será encurtada | https://github.com/JulimarJunior/ShortURL | String | Sim
-| $custom | URL encurtada personalizada | shortUrl | string | Não
+| $url | URL que será encurtada. | https://github.com/JulimarJunior/ShortURL | string | Sim
+| $custom | URL encurtada personalizada. | shortUrl | string | Não
 
-A função irá gerar um URL personalizado ou aleatório encurtando a URL origem e armazenando no arquivo ```shorts.json```.
+Caso o parâmetro ```$custom``` seja enviado, a função irá gerar a URL encurtada utilizando-o após verificar duplicidade de URL encurtada customizada.
 
-### Limpar URL encurtada
+#### Exemplos de URL encurtadas:
+```php
+shortURL('https://github.com');
+// URL encurtada: https://example.com/s/2yu3gf;
+
+shortURL('https://github.com', 'gitHub');
+// URL encurtada: https://example.com/s/gitHub;
+```
+
+### clearShortUrl
+A função **clearShortUrl** remove as "impurezas" da URL enviada, mantendo apenas a a identificação da URL encurtada (que deve obrigatoriamente está presente após a última **/** da URL).
 ```php
 clearShortUrl($url);
 ```
 | Parâmetro | Descrição | Exemplo | Tipo | Obrigatório |
 |--|--|--|--|--|
-| $url | URL que deve ser limpa | ShortURL | String | Sim
+| $url | URL que deve ser limpa. | ShortURL | string | Sim
 
-A função irá retornar o valor limpo da URL, retirando a base do servidor e obtendo apenas o código para identificar a origem.
-**Por exemplo:**
+Deve ser utilizada para obter os dados da URL encurtadas.
+
+#### Exemplos de limpeza da URL:
 ```php
-echo clearShortUrl('https://example.com/shortUrl');
-// Irá escrever "shortURL";
+clearShortUrl('https://example.com/2yu3gf');
+// URL limpa: 2yu3gf;
+
+clearShortUrl('https://example.com/shortUrl');
+// URL limpa: shortUrl;
 ```
 
-### Abrir URL encurtada
+### openShortUrl
+A função **openShortUrl** abre a URL original a partir da identificação da URL encurtada, contabiliza a quantidade de acessos (armazenando no arquivo *.json*) e redireciona o usuário para a URL original.
 ```php
 openShortUrl($short);
 ```
 | Parâmetro | Descrição | Exemplo | Tipo | Obrigatório |
 |--|--|--|--|--|
-| $short | URL encurtada já sem a URL do servidor | ShortURL | String | Sim
+| $short | URL encurtada já sem a URL do servidor. | ShortURL | String | Sim
 
-### Limpar e abrir URL encurtada
-É possível já enviar para o ```openShortUrl()``` já a URL atual da página e realizar o redirecionamento diretamente.
+O envio da URL para o **openShortUrl** pode ser feito já utilizando o **clearShortUrl** e também a URL atual caso esteja sendo executado diretamente no index do diretório.
+
+#### Exemplo:
 ```php
 openShortUrl(clearShortUrl($_SERVER["REQUEST_URI"]));
 ```
-O código obtêm o URL atual da página que está aberta, separando o código da URL encurtada e redirecionando para a URL original.
-> É obrigatório o uso do HTACCESS para que essa função funcione corretamente.
+| Item | Descrição |
+|--|--|
+| openShortUrl() | Abre a URL original a partir da identificação encurtada. |
+| clearShortUrl() | Obtém a identificação da URL encurtada. |
+| $_SERVER["REQUEST_URI"] | Obtém a URL atual no navegador. |
 
-## Utilização
-Utilize o **shortURL** adicionando todos os arquivos em uma pasta única para ele no servidor e no index.php da mesma mantenha apenas o exemplo de **Limpar e abrir URL encurtada**.
-
-Assim, ao acessar o diretório com a URL encurtada o usuário será automaticamente redirecionado.
-
-Por exemplo, ao acessar https://example.com/s/shortURL ele será redirecionado para https://github.com/JulimarJunior/ShortURL.
-
-Veja o exemplo no arquivo ```index.php``` do repositório.
+## 👋 Por fim (mas não menos importante)
+O projeto **shortURL** é um repositório de código livre, qualquer um pode (caso deseje) fazer atualizações para seus respectivos sistemas e utiliza-lo.
