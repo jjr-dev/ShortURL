@@ -11,6 +11,7 @@ Acompanhe as atualizações que ocorreram anteriormente no **shortURL**.
 |--|--|--|
 |20/02/2021 | 1.0 | Base do projeto
 | 22/02/2021 | 1.1 | Ajustes de retornos
+| 22/02/2021 | 1.2 | Dados de URL e Ambiente de Testes
 
 ## 👨‍💻 Instalação
 1. Baixe todos os arquivos do repositório **shortURL** em uma pasta do servidor vazia (exclusiva para o **shortURL**:
@@ -84,6 +85,35 @@ openShortUrl(clearShortUrl($_SERVER["REQUEST_URI"]));
 | openShortUrl() | Abre a URL original a partir da identificação encurtada. |
 | clearShortUrl() | Obtém a identificação da URL encurtada. |
 | $_SERVER["REQUEST_URI"] | Obtém a URL atual no navegador. |
+
+### infosUrl
+A função **infosUrl** busca as informações referente a URL encurtada.
+```php
+infosUrl($short)
+```
+| Parâmetro | Descrição | Exemplo | Tipo | Obrigatório |
+|--|--|--|--|--|
+| $short | URL encurtada já sem a URL do servidor. | ShortURL | String | Sim
+
+O envio da URL para o **infosUrl** pode ser feito já utilizando o **clearShortUrl** e também a URL atual caso esteja sendo executado diretamente no index do diretório.
+
+#### Exemplo:
+```php
+infosUrl(clearShortUrl($url));
+```
+| Item | Descrição |
+|--|--|
+| infosUrl() | Busca as informações da URL a partir da identificação encurtada. |
+| clearShortUrl() | Obtém a identificação da URL encurtada. |
+| $url | URL encurtada completa. |
+
+A função irá retornar a **data de criação**, **quantidade de acessos**, **URL original** e **URL encurtada**.
+
+## ☕ Teste ao vivo
+O ambiente de testes irá ainda gerar URL mais longas que o planejado por está em uma série de diretórios no servidor de testes. Mas em um servidor correto em uso a URL encurtada deve se assemelhar a https://example.com/s/shortUrl.
+
+É possível realizar testes encurtando e obtendo informações de URL acessando o [Ambiente de Testes](https://akirastudio.com.br/projects/shortUrl/).
+Todos os arquivos do Ambiente de Testes estão no diretório ```example/``` do repositório.
 
 ## 👋 Por fim (mas não menos importante)
 O projeto **shortURL** é um repositório de código livre, qualquer um pode (caso deseje) fazer atualizações para seus respectivos sistemas e utiliza-lo.
